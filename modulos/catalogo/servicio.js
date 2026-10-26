@@ -35,6 +35,7 @@ productoServicio.listarMarcas = async function () {
 
 // ===== G7-CUP · Cupón · inicio - Duvan Tique =====
 window.catalogoServicio = window.catalogoServicio || {};
+window.presentacionServicio = window.presentacionServicio || window.catalogoServicio;
 
 window.catalogoServicio.crearPresentacion = async function (nuevaPresentacion) {
   if (API_CONFIG.modo === 'local') {
@@ -44,7 +45,11 @@ window.catalogoServicio.crearPresentacion = async function (nuevaPresentacion) {
     return Promise.resolve(nuevaPresentacion);
   }
 
-  const respuesta = await fetch(API_CONFIG.baseUrl + '/presentaciones', {
+ const endpoint = API_CONFIG.baseUrl.includes('producto') 
+    ? API_CONFIG.baseUrl 
+    : API_CONFIG.baseUrl + '/presentaciones/producto'; 
+
+  const respuesta = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -71,6 +76,7 @@ presentacionServicio.listarPresentaciones = async function () {
   }
   return await respuesta.json();
 };
+window.presentacionServicio.crearPresentacion = window.catalogoServicio.crearPresentacion;
 // ===== G7-CUP · Cupón · fin =====
 // ===== G1-CAT · Categorías · inicio =====
 // Autor: Daniel Acevedo Yepes
